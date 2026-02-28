@@ -17,10 +17,20 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:40px;
+  font-size:50px;
   color:white;
   background:black;
-  letter-spacing:3px;
+  letter-spacing:5px;
+  opacity:0;
+  animation:bootFade 4s ease forwards;
+  text-shadow:0 0 20px rgba(255,255,255,0.8);
+}
+
+@keyframes bootFade{
+  0%   { opacity:0; }
+  20%  { opacity:1; }
+  70%  { opacity:1; }
+  100% { opacity:0; }
 }
 
 /* Login */
@@ -139,7 +149,7 @@ body{
 
 <body>
 
-<div id="boot">cha-syuOS v0.5</div>
+<div id="boot">cha-syuOS</div>
 
 <div id="login">
   <h2>Login to cha-syuOS v0.5</h2>
@@ -156,7 +166,7 @@ body{
     </div>
 
     <div class="icon" onclick="openAbout()">
-      💻<br>About
+     🐽<br>About
     </div>
   </div>
 
@@ -183,7 +193,7 @@ var desktop=document.getElementById("desktop");
 setTimeout(()=>{
   boot.style.display="none";
   loginScreen.style.display="flex";
-},1500);
+},4000);
 
 function login(){
   if(document.getElementById("password").value==="ramen"){
