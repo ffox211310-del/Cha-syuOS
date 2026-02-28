@@ -2,13 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>cha-syuOS</title>
+<title>cha-syuOS v0.5</title>
 
 <style>
 body{
   margin:0;
   font-family:Segoe UI, sans-serif;
-  background:black;
   overflow:hidden;
 }
 
@@ -58,7 +57,24 @@ body{
   height:100vh;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   position:relative;
-  backdrop-filter:blur(10px);
+  color:white;
+}
+
+/* Desktop Icons */
+.icon{
+  width:80px;
+  text-align:center;
+  cursor:pointer;
+  margin:20px;
+}
+
+.icon:hover{
+  opacity:0.7;
+}
+
+.iconArea{
+  display:flex;
+  padding:20px;
 }
 
 /* Taskbar */
@@ -75,7 +91,6 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 #startBtn{
@@ -83,12 +98,6 @@ body{
   background:rgba(255,255,255,0.2);
   border-radius:12px;
   cursor:pointer;
-  transition:0.2s;
-  color:white;
-}
-
-#startBtn:hover{
-  background:rgba(255,255,255,0.4);
 }
 
 /* Start Menu */
@@ -102,15 +111,11 @@ body{
   border-radius:15px;
   padding:15px;
   display:none;
-  color:white;
-  box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 
 .menuItem{
   padding:8px 20px;
-  border-radius:10px;
   cursor:pointer;
-  transition:0.2s;
 }
 
 .menuItem:hover{
@@ -128,33 +133,46 @@ body{
   border-radius:15px;
   padding:15px;
   color:white;
-  box-shadow:0 0 30px rgba(0,0,0,0.5);
 }
 </style>
 </head>
 
 <body>
 
-<div id="boot">cha-syuOS</div>
+<div id="boot">cha-syuOS v0.5</div>
 
 <div id="login">
-  <h2>Welcome to cha-syuOS</h2>
+  <h2>Login to cha-syuOS v0.5</h2>
   <input type="password" id="password" placeholder="Password">
   <button onclick="login()">Login</button>
 </div>
 
 <div id="desktop">
+
+  <!-- Desktop Icons -->
+  <div class="iconArea">
+    <div class="icon" onclick="openNotepad()">
+      📝<br>Note
+    </div>
+
+    <div class="icon" onclick="openAbout()">
+      💻<br>About
+    </div>
+  </div>
+
+  <!-- Taskbar -->
   <div id="taskbar">
     <div id="startBtn" onclick="toggleStart()">Start</div>
   </div>
 
+  <!-- Start Menu -->
   <div id="startMenu">
-    <div class="menuItem" onclick="openAbout()">About</div>
     <div class="menuItem" onclick="openNotepad()">Notepad</div>
     <div class="menuItem" onclick="changeWallpaper(1)">Dark</div>
     <div class="menuItem" onclick="changeWallpaper(2)">Ocean</div>
     <div class="menuItem" onclick="changeWallpaper(3)">Sunset</div>
   </div>
+
 </div>
 
 <script>
@@ -171,6 +189,7 @@ function login(){
   if(document.getElementById("password").value==="ramen"){
     loginScreen.style.display="none";
     desktop.style.display="block";
+    loadWallpaper();
   }else{
     alert("Wrong password");
   }
@@ -190,17 +209,43 @@ function createWindow(title,content){
 }
 
 function openAbout(){
-  createWindow("About","cha-syuOS UI v2<br>Glass Edition");
+  createWindow("About","cha-syuOS v0.5<br>Stable Foundation Build");
 }
 
 function openNotepad(){
-  createWindow("Notepad","<textarea style='width:100%;height:100px;'></textarea>");
+  var content=localStorage.getItem("note")||"";
+  createWindow("Notepad",
+    "<textarea id='noteArea' style='width:100%;height:100px;'>"+content+
+    "</textarea><br><button onclick='saveNote()'>Save</button>"
+  );
+}
+
+function saveNote(){
+  var text=document.getElementById("noteArea").value;
+  localStorage.setItem("note",text);
+  alert("Saved!");
 }
 
 function changeWallpaper(type){
-  if(type===1) desktop.style.background="linear-gradient(135deg,#0f2027,#203a43,#2c5364)";
-  if(type===2) desktop.style.background="linear-gradient(135deg,#1c92d2,#f2fcfe)";
-  if(type===3) desktop.style.background="linear-gradient(135deg,#ff512f,#dd2476)";
+  if(type===1){
+    desktop.style.background="linear-gradient(135deg,#0f2027,#203a43,#2c5364)";
+    localStorage.setItem("wall",1);
+  }
+  if(type===2){
+    desktop.style.background="linear-gradient(135deg,#1c92d2,#f2fcfe)";
+    localStorage.setItem("wall",2);
+  }
+  if(type===3){
+    desktop.style.background="linear-gradient(135deg,#ff512f,#dd2476)";
+    localStorage.setItem("wall",3);
+  }
+}
+
+function loadWallpaper(){
+  var saved=localStorage.getItem("wall");
+  if(saved){
+    changeWallpaper(parseInt(saved));
+  }
 }
 </script>
 
