@@ -5,7 +5,6 @@
 <title>cha-syuOS v0.5</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
-
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -38,11 +37,9 @@ body{
   opacity:0;
   animation:bootFade 4s ease forwards;
 }
-
 #boot img{
   max-width:1200px;
 }
-
 @keyframes bootFade{
   0%{opacity:0;}
   20%{opacity:1;}
@@ -75,12 +72,32 @@ body{
   display:flex;
   padding:20px;
 }
-
 .icon{
   width:80px;
   text-align:center;
   cursor:pointer;
   margin:20px;
+}
+
+/* App Icon (Gameなど) */
+.app-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width:80px;
+  margin:20px;
+  cursor: pointer;
+}
+.app-icon .icon {
+  font-size: 40px;
+  line-height: 1;
+  text-align: center;
+}
+.app-icon .label {
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+  color: white;
 }
 
 /* Taskbar */
@@ -95,14 +112,8 @@ body{
   justify-content:space-between;
   padding:0 20px;
 }
-
-#startBtn{
-  cursor:pointer;
-}
-
-#clock{
-  font-size:20px;
-}
+#startBtn{cursor:pointer;}
+#clock{font-size:20px;}
 
 /* Start Menu */
 #startMenu{
@@ -128,7 +139,6 @@ body{
 </head>
 
 <body>
-
 <div id="terminalBoot"></div>
 
 <div id="boot">
@@ -146,23 +156,17 @@ body{
 
 <div id="desktop">
 
+  <!-- Noteアイコン -->
   <div class="iconArea">
     <div class="icon" onclick="openNotepad()">📝<br>Note</div>
   </div>
-<div class="app-icon" onclick="openGame()">
-  <div class="icon">🟩</div>
-  <div class="label">Game</div>
-</div>
-<script>
-function openGame() {
-  window.location.href = "game.html"; // game.htmlを開く
-}
-</script>
-<script>
-function openGame() {
-  window.location.href = "game.html";
-}
-</script>
+
+  <!-- Gameアイコン -->
+  <div class="app-icon" onclick="openGame()">
+    <div class="icon">🟩</div>
+    <div class="label">Game</div>
+  </div>
+
   <div id="taskbar">
     <div id="startBtn" onclick="toggleStart()">Start</div>
     <div id="clock"></div>
@@ -170,7 +174,7 @@ function openGame() {
 
   <div id="startMenu">
     <div onclick="openNotepad()">Notepad</div>
-   <div onclick="openAbout()">About cha-syuOS</div>
+    <div onclick="openAbout()">About cha-syuOS</div>
     <div>
       壁紙変更
       <input type="file" accept="image/*" onchange="setWallpaper(event)">
@@ -180,14 +184,11 @@ function openGame() {
 </div>
 
 <script>
-  window.onload = function(){
-
-  var savedLogo = localStorage.getItem("logo");
-  if(savedLogo){
-    document.getElementById("logoImage").src = savedLogo;
-  }
-
+window.onload=function(){
+  var savedLogo=localStorage.getItem("logo");
+  if(savedLogo){document.getElementById("logoImage").src=savedLogo;}
 };
+
 var terminal=document.getElementById("terminalBoot");
 var boot=document.getElementById("boot");
 var loginScreen=document.getElementById("login");
@@ -214,9 +215,7 @@ function login(){
     loginScreen.style.display="none";
     desktop.style.display="block";
     loadSaved();
-  }else{
-    alert("Wrong password");
-  }
+  }else{alert("Wrong password");}
 }
 
 /* Windows */
@@ -235,11 +234,13 @@ function openNotepad(){
     "</textarea><br><button onclick='saveNote()'>Save</button>"
   );
 }
-
 function saveNote(){
   localStorage.setItem("note",document.getElementById("noteArea").value);
   alert("Saved!");
 }
+
+/* Game */
+function openGame(){window.location.href="game.html";}
 
 /* Wallpaper */
 function setWallpaper(event){
@@ -264,13 +265,9 @@ function setLogo(event){
 /* Load saved */
 function loadSaved(){
   var savedWall=localStorage.getItem("wall");
-  if(savedWall){
-    desktop.style.background="url("+savedWall+") center/cover";
-  }
+  if(savedWall){desktop.style.background="url("+savedWall+") center/cover";}
   var savedLogo=localStorage.getItem("logo");
-  if(savedLogo){
-    document.getElementById("logoImage").src=savedLogo;
-  }
+  if(savedLogo){document.getElementById("logoImage").src=savedLogo;}
 }
 
 /* Clock */
@@ -291,6 +288,9 @@ function toggleStart(){
   var menu=document.getElementById("startMenu");
   menu.style.display=(menu.style.display==="block")?"none":"block";
 }
+
+/* About */
+function openAbout(){alert("cha-syuOS v0.5\nMade by じぷち");}
 </script>
 
 </body>
