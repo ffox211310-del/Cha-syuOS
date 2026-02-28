@@ -7,85 +7,66 @@
 <style>
 body{
   margin:0;
-  overflow:hidden;
-  font-family:sans-serif;
+  font-family:monospace;
+  background:black;
+  color:white;
 }
 
 #boot{
-  position:fixed;
-  width:100vw;
-  height:100vh;
-  background:black;
-  color:lime;
   padding:20px;
+}
+
+#login{
+  display:none;
+  text-align:center;
+  margin-top:100px;
 }
 
 #desktop{
   display:none;
-  width:100vw;
   height:100vh;
   background:linear-gradient(135deg,#1a1a1a,#333);
   position:relative;
 }
 
-.icon{
-  color:white;
-  margin:20px;
-  cursor:pointer;
-}
-
-.window{
-  width:300px;
-  background:white;
-  position:absolute;
-  top:120px;
-  left:120px;
-  border-radius:8px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.5);
-}
-
-.titlebar{
-  background:#222;
-  color:white;
-  padding:8px;
-  display:flex;
-  justify-content:space-between;
-}
-
-.content{
-  padding:10px;
-  color:black;
-}
-
 #taskbar{
-  position:fixed;
+  position:absolute;
   bottom:0;
   width:100%;
   height:40px;
   background:#111;
-  color:white;
   display:flex;
   align-items:center;
 }
 
 #startBtn{
-  padding:10px;
+  padding:8px;
+  background:#222;
   cursor:pointer;
 }
 
 #startMenu{
-  position:fixed;
+  position:absolute;
   bottom:40px;
   left:0;
-  width:150px;
   background:#222;
-  color:white;
   display:none;
   padding:10px;
 }
+
 .menuItem{
+  padding:5px;
   cursor:pointer;
-  margin:5px 0;
+}
+
+.window{
+  position:absolute;
+  top:100px;
+  left:100px;
+  width:300px;
+  background:#111;
+  border:1px solid #555;
+  padding:10px;
 }
 </style>
 </head>
@@ -94,77 +75,105 @@ body{
 
 <div id="boot"></div>
 
+<div id="login">
+  <h2>cha-syuOS Login</h2>
+  <input type="password" id="password" placeholder="password">
+  <button onclick="login()">Enter</button>
+</div>
+
 <div id="desktop">
-  <div class="icon" onclick="openAbout()">🐽 About</div>
-  <div class="icon" onclick="openNotepad()">📝 Notepad</div>
+  <div id="taskbar">
+    <div id="startBtn" onclick="toggleStart()">☰ Start</div>
+  </div>
+
+  <div id="startMenu">
+    <div class="menuItem" onclick="openAbout()">About</div>
+    <div class="menuItem" onclick="openNotepad()">Notepad</div>
+    <div class="menuItem" onclick="changeWallpaper(1)">Dark</div>
+    <div class="menuItem" onclick="changeWallpaper(2)">Ocean</div>
+    <div class="menuItem" onclick="changeWallpaper(3)">Sunset</div>
+  </div>
 </div>
 
-<div id="taskbar">
-  <div id="startBtn" onclick="toggleStart()">☰ Start</div>
-</div>
-
-<div id="startMenu">
-  <div class="menuItem" onclick="openAbout()">About</div>
-  <div class="menuItem" onclick="openNotepad()">Notepad</div>
-</div>
-
-<div class="menuItem" onclick="changeWallpaper(1)">Red</div>
-<div class="menuItem" onclick="changeWallpaper(2)">Blue</div>
-<div class="menuItem" onclick="changeWallpaper(3)">Green</div>
 <script>
 var boot = document.getElementById("boot");
+var loginScreen = document.getElementById("login");
 var desktop = document.getElementById("desktop");
 
-function changeWallpaper(type){
-  if(type === 1){
-    desktop.style.background = "red";
-  }
-  if(type === 2){
-    desktop.style.background = "blue";
-  }
-  if(type === 3){
-    desktop.style.background = "green";
-  }
-}
-
-function printBoot(text){
-  boot.innerHTML += text + "<br>";
-}
-
-printBoot("Booting cha-syuOS...");
-setTimeout(()=>printBoot("Loading kernel..."),800);
-setTimeout(()=>printBoot("Initializing GUI..."),1600);
-setTimeout(()=>{
+boot.innerHTML = "Booting cha-syuOS...<br>";
+setTimeout(function(){
   boot.style.display="none";
-  desktop.style.display="block";
-},2400);
+  loginScreen.style.display="block";
+},1500);
 
-function createWindow(title,content){
-  var win=document.createElement("div");
-  win.className="window";
-  win.innerHTML=
-  "<div class='titlebar'>"+title+
-  "<span style='cursor:pointer' onclick='this.parentElement.parentElement.remove()'>✖</span></div>"+
-  "<div class='content'>"+content+"</div>";
-  desktop.appendChild(win);
-}
-
-function openAbout(){
-  createWindow("About","Welcome to cha-syuOS v0.5");
-}
-
-function openNotepad(){
-  createWindow("Notepad","<textarea style='width:100%;height:150px;'></textarea>");
+function login(){
+  var pass = document.getElementById("password").value;
+  if(pass === "ramen"){
+    loginScreen.style.display="none";
+    desktop.style.display="block";
+    loadWallpaper();
+  }else{
+    alert("Wrong password");
+  }
 }
 
 function toggleStart(){
-  var menu=document.getElementById("startMenu");
-  menu.style.display = menu.style.display==="block"?"none":"block";
+  var menu = document.getElementById("startMenu");
+  if(menu.style.display === "block"){
+    menu.style.display="none";
+  }else{
+    menu.style.display="block";
+  }
+}
+
+function openAbout(){
+  createWindow("About","cha-syuOS v1.2<br>Made by legend.");
+}
+
+function openNotepad(){
+  var content = localStorage.getItem("note") || "";
+  createWindow("Notepad",
+    "<textarea id='noteArea' style='width:100%;height:100px;'>"+content+
+    "</textarea><br><button onclick='saveNote()'>Save</button>"
+  );
+}
+
+function saveNote(){
+  var text = document.getElementById("noteArea").value;
+  localStorage.setItem("note",text);
+  alert("Saved!");
+}
+
+function createWindow(title,content){
+  var win = document.createElement("div");
+  win.className="window";
+  win.innerHTML="<b>"+title+"</b><br>"+content+
+  "<br><button onclick='this.parentElement.remove()'>Close</button>";
+  desktop.appendChild(win);
+}
+
+function changeWallpaper(type){
+  if(type===1){
+    desktop.style.background="linear-gradient(135deg,#1a1a1a,#333)";
+    localStorage.setItem("wall",1);
+  }
+  if(type===2){
+    desktop.style.background="linear-gradient(135deg,#002b36,#073642)";
+    localStorage.setItem("wall",2);
+  }
+  if(type===3){
+    desktop.style.background="linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)";
+    localStorage.setItem("wall",3);
+  }
+}
+
+function loadWallpaper(){
+  var saved = localStorage.getItem("wall");
+  if(saved){
+    changeWallpaper(parseInt(saved));
+  }
 }
 </script>
 
 </body>
 </html>
-
-
-
