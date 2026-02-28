@@ -149,7 +149,16 @@ body{
   <div class="iconArea">
     <div class="icon" onclick="openNotepad()">📝<br>Note</div>
   </div>
+<div class="app-icon" onclick="openGame()">
+  <div class="icon">🟩</div>
+  <div class="label">Game</div>
+</div>
 
+<script>
+function openGame() {
+  window.location.href = "game.html";
+}
+</script>
   <div id="taskbar">
     <div id="startBtn" onclick="toggleStart()">Start</div>
     <div id="clock"></div>
