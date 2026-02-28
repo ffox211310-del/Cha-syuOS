@@ -161,6 +161,14 @@ body{
 </div>
 
 <script>
+  window.onload = function(){
+
+  var savedLogo = localStorage.getItem("logo");
+  if(savedLogo){
+    document.getElementById("logoImage").src = savedLogo;
+  }
+
+};
 var terminal=document.getElementById("terminalBoot");
 var boot=document.getElementById("boot");
 var loginScreen=document.getElementById("login");
