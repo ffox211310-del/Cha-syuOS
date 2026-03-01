@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>cha-syuOS v0.5</title>
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -14,6 +13,48 @@ body{
   font-family:Segoe UI, sans-serif;
   overflow:hidden;
   background:black;
+}
+
+/* Terminal Boot */
+#terminalBoot{
+  position:fixed;
+  width:100%;
+  height:100vh;
+  background:black;
+  color:#00ff00;
+  font-family:monospace;
+  padding:20px;
+}
+
+/* Logo Boot */
+#boot{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  opacity:0;
+  animation:bootFade 4s ease forwards;
+}
+#boot img{
+  max-width:1200px;
+}
+@keyframes bootFade{
+  0%{opacity:0;}
+  20%{opacity:1;}
+  70%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/* Login */
+#login{
+  display:none;
+  height:100vh;
+  background:linear-gradient(135deg,#141e30,#243b55);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  color:white;
 }
 
 /* Desktop */
@@ -37,7 +78,7 @@ body{
   margin:20px;
 }
 
-/* App Icon (Gameなど) */
+/* App Icon */
 .app-icon {
   display: inline-flex;
   flex-direction: column;
@@ -73,6 +114,27 @@ body{
 #startBtn{cursor:pointer;}
 #clock{font-size:20px;}
 
+/* Start Menu */
+#startMenu{
+  position:absolute;
+  bottom:50px;
+  left:20px;
+  background:rgba(0,0,0,0.8);
+  padding:10px;
+  display:none;
+}
+
+/* Window */
+.window{
+  position:absolute;
+  top:120px;
+  left:120px;
+  width:300px;
+  background:rgba(255,255,255,0.1);
+  padding:15px;
+  border-radius:10px;
+}
+
 /* Game Container */
 #gameContainer{
   display:none;
@@ -101,6 +163,20 @@ body{
 </head>
 
 <body>
+<div id="terminalBoot"></div>
+
+<div id="boot">
+  <img id="logoImage" src="">
+</div>
+
+<div id="login">
+  <h2>Login to cha-syuOS v0.5</h2>
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <br><br>
+  ロゴ変更:
+  <input type="file" accept="image/*" onchange="setLogo(event)">
+</div>
 
 <div id="desktop">
   <!-- Gameアイコン -->
@@ -109,13 +185,22 @@ body{
     <div class="label">Game</div>
   </div>
 
+  <div class="iconArea">
+    <div class="icon" onclick="openNotepad()">📝<br>Note</div>
+  </div>
+
   <div id="taskbar">
-    <div id="startBtn">Start</div>
+    <div id="startBtn" onclick="toggleStart()">Start</div>
     <div id="clock"></div>
+  </div>
+
+  <div id="startMenu">
+    <div onclick="openNotepad()">Notepad</div>
+    <div onclick="openAbout()">About cha-syuOS</div>
   </div>
 </div>
 
-<!-- ゲーム画面 -->
+<!-- Game Container -->
 <div id="gameContainer">
   <canvas id="gameCanvas"></canvas>
   <button id="restartBtn">リスタート</button>
@@ -123,11 +208,85 @@ body{
 </div>
 
 <script>
-// ------------------ デスクトップ ------------------
-const desktop = document.getElementById("desktop");
+// ------------------ 起動アニメ ------------------
+window.onload = function(){
+  var savedLogo = localStorage.getItem("logo");
+  if(savedLogo){document.getElementById("logoImage").src = savedLogo;}
+};
 
+var terminal = document.getElementById("terminalBoot");
+var boot = document.getElementById("boot");
+var loginScreen = document.getElementById("login");
+var desktop = document.getElementById("desktop");
+
+terminal.innerHTML = "Initializing cha-syuOS v0.5...<br>";
+setTimeout(()=>{terminal.innerHTML+="Loading kernel...<br>";},500);
+setTimeout(()=>{terminal.innerHTML+="Starting services...<br>";},1000);
+setTimeout(()=>{
+  terminal.style.display="none";
+  boot.style.display="flex";
+},2000);
+setTimeout(()=>{
+  boot.style.display="none";
+  loginScreen.style.display="flex";
+},6000);
+
+// ------------------ Login ------------------
+function login(){
+  if(document.getElementById("password").value==="ramen"){
+    loginScreen.style.display="none";
+    desktop.style.display="block";
+    loadSaved();
+  }else{alert("Wrong password");}
+}
+
+// ------------------ Windows ------------------
+function createWindow(title,content){
+  var win=document.createElement("div");
+  win.className="window";
+  win.innerHTML="<b>"+title+"</b><br>"+content+"<br><button onclick='this.parentElement.remove()'>Close</button>";
+  desktop.appendChild(win);
+}
+
+function openNotepad(){
+  var content=localStorage.getItem("note")||"";
+  createWindow("Notepad","<textarea id='noteArea' style='width:100%;height:100px;'>"+content+"</textarea><br><button onclick='saveNote()'>Save</button>");
+}
+
+function saveNote(){
+  localStorage.setItem("note",document.getElementById("noteArea").value);
+  alert("Saved!");
+}
+
+// ------------------ Wallpaper & Logo ------------------
+function setWallpaper(event){
+  var reader=new FileReader();
+  reader.onload=function(){
+    desktop.style.background="url("+reader.result+") center/cover";
+    localStorage.setItem("wall",reader.result);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function setLogo(event){
+  var reader=new FileReader();
+  reader.onload=function(){
+    document.getElementById("logoImage").src=reader.result;
+    localStorage.setItem("logo",reader.result);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function loadSaved(){
+  var savedWall=localStorage.getItem("wall");
+  if(savedWall){desktop.style.background="url("+savedWall+") center/cover";}
+  var savedLogo=localStorage.getItem("logo");
+  if(savedLogo){document.getElementById("logoImage").src=savedLogo;}
+}
+
+// ------------------ Clock ------------------
 function updateClock(){
-  const now = new Date();
+  var now = new Date();
   document.getElementById("clock").innerHTML=
     now.getFullYear()+"/"+
     String(now.getMonth()+1).padStart(2,'0')+"/"+
@@ -138,7 +297,15 @@ function updateClock(){
 setInterval(updateClock,1000);
 updateClock();
 
-// ------------------ ゲーム ------------------
+// ------------------ Start Menu ------------------
+function toggleStart(){
+  var menu=document.getElementById("startMenu");
+  menu.style.display=(menu.style.display==="block")?"none":"block";
+}
+
+function openAbout(){alert("cha-syuOS v0.5\nMade by じぷち");}
+
+// ------------------ ゲーム統合 ------------------
 const gameContainer = document.getElementById("gameContainer");
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -179,11 +346,9 @@ function draw(){
     return;
   }
 
-  // プレイヤー描画
   ctx.fillStyle="lime";
   ctx.fillRect(player.x,player.y,player.size,player.size);
 
-  // 敵処理
   enemies.forEach(enemy=>{
     if(player.x>enemy.x) enemy.x += enemy.speed;
     if(player.x<enemy.x) enemy.x -= enemy.speed;
@@ -193,7 +358,6 @@ function draw(){
     ctx.fillStyle="red";
     ctx.fillRect(enemy.x,enemy.y,enemy.size,enemy.size);
 
-    // 当たり判定
     if(player.x<enemy.x+enemy.size &&
        player.x+player.size>enemy.x &&
        player.y<enemy.y+enemy.size &&
@@ -209,7 +373,6 @@ function draw(){
   requestAnimationFrame(draw);
 }
 
-// タッチでプレイヤー移動
 canvas.addEventListener("touchstart",e=>{
   if(!gameOver){
     player.x = e.touches[0].clientX - player.size/2;
@@ -218,7 +381,6 @@ canvas.addEventListener("touchstart",e=>{
   }
 });
 
-// ------------------ ボタン ------------------
 restartBtn.addEventListener("click", ()=>{
   initGame();
   draw();
@@ -229,7 +391,6 @@ homeBtn.addEventListener("click", ()=>{
   desktop.style.display="block";
 });
 
-// ------------------ ゲーム起動 ------------------
 function openGame(){
   desktop.style.display="none";
   gameContainer.style.display="block";
