@@ -215,7 +215,18 @@ body{
   <button id="restartBtn">リスタート</button>
   <button id="homeBtn">ホームに戻る</button>
 </div>
-<div id="musicContainer" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:black; color:white; padding:20px;">
+<div id="musicContainer"
+  style="display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background:black;
+  color:white;
+  padding:20px;
+  box-sizing:border-box;
+  z-index:9999;"> top:0; left:0; width:100%; height:100%; background:black; color:white; padding:20px;">
   <h2>Music Player</h2>
 
   <input type="file" id="musicFile" accept="audio/*">
