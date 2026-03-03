@@ -1,135 +1,352 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="icon" type="image/png" href="icon.PNG">
+<link rel="apple-touch-icon" href="icon.PNG">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>cha-syuOS v0.6</title>
+<title>cha-syuOS v0.5</title>
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 <style>
-/* ===== 基本安定設定 ===== */
-html, body{
+body{
   margin:0;
-  padding:0;
-  height:100%;
   font-family:Segoe UI, sans-serif;
+  overflow:hidden;
   background:black;
 }
 
-/* ===== 画面共通 ===== */
-.screen{
-  display:none;
+/* Terminal Boot */
+#terminalBoot{
+  position:fixed;
   width:100%;
-  height:100dvh; /* iOS安定 */
-  box-sizing:border-box;
-}
-
-/* ===== Desktop ===== */
-#desktop{
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:white;
+  height:100vh;
+  background:black;
+  color:#00ff00;
+  font-family:monospace;
   padding:20px;
 }
 
-.app-icon{
-  display:inline-flex;
-  flex-direction:column;
+/* Logo Boot */
+#boot{
+  display:none;
+  height:100vh;
+  justify-content:center;
   align-items:center;
-  margin:20px;
-  cursor:pointer;
-  font-size:40px;
+  background:black;
+  opacity:0;
+  animation:bootFade 4s ease forwards;
+}
+#boot img{
+  max-width:1200px;
+}
+@keyframes bootFade{
+  0%{opacity:0;}
+  20%{opacity:1;}
+  70%{opacity:1;}
+  100%{opacity:0;}
 }
 
-/* ===== Game ===== */
-#gameContainer{
-  background:black;
-  color:white;
-  display:flex;
+/* Login */
+#login{
+  display:none;
+  height:100vh;
+  background:linear-gradient(135deg,#141e30,#243b55);
   justify-content:center;
   align-items:center;
   flex-direction:column;
-}
-
-/* ===== Music ===== */
-#musicContainer{
-  background:black;
   color:white;
-  padding:20px;
-  overflow:auto;
 }
 
-/* ===== Buttons ===== */
-button{
-  padding:10px 20px;
-  margin-top:20px;
-  font-size:16px;
+/* Desktop */
+#desktop{
+  display:none;
+  height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  position:relative;
+  color:white;
 }
+
+/* Icons */
+.iconArea{
+  display:flex;
+  padding:20px;
+}
+.icon{
+  width:80px;
+  text-align:center;
+  cursor:pointer;
+  margin:20px;
+}
+
+/* App Icon */
+.app-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width:80px;
+  margin:20px;
+  cursor: pointer;
+}
+.app-icon .icon {
+  font-size: 40px;
+  line-height: 1;
+  text-align: center;
+}
+.app-icon .label {
+  font-size: 14px;
+  margin-top: 4px;
+  text-align: center;
+  color: white;
+}
+
+/* Taskbar */
+#taskbar{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:50px;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+}
+#startBtn{cursor:pointer;}
+#clock{font-size:20px;}
+
+/* Start Menu */
+#startMenu{
+  position:absolute;
+  bottom:50px;
+  left:20px;
+  background:rgba(0,0,0,0.8);
+  padding:10px;
+  display:none;
+}
+
+/* Window */
+.window{
+  position:absolute;
+  top:120px;
+  left:120px;
+  width:300px;
+  background:rgba(255,255,255,0.1);
+  padding:15px;
+  border-radius:10px;
+}
+
+/* Game Container */
+#gameContainer{
+  display:none;
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:black;
+}
+#gameContainer canvas{
+  display:block;
+}
+
+/* Buttons */
+#restartBtn, #homeBtn{
+  position:absolute;
+  left:50%;
+  padding:15px 30px;
+  font-size:30px;
+  cursor:pointer;
+  display:none;
+  transform:translate(-50%,0);
+}
+#restartBtn{top:60%;}
+#homeBtn{top:70%;}
 </style>
 </head>
 
 <body>
+<div id="terminalBoot"></div>
 
-<!-- ===== Desktop ===== -->
-<div id="desktop" class="screen">
-  <h2>cha-syuOS</h2>
-
-  <div class="app-icon" onclick="openGame()">🎮 Game</div>
-  <div class="app-icon" onclick="openMusic()">🎵 Music</div>
+<div id="boot">
+<img id="logoImage" src="os-logo.PNG">
 </div>
 
-<!-- ===== Game ===== -->
-<div id="gameContainer" class="screen">
-  <h2>Game Screen</h2>
-  <p>ここにCanvasを入れる</p>
-  <button onclick="showScreen('desktop')">ホームに戻る</button>
+<div id="login">
+  <h2>Login to cha-syuOS v0.5</h2>
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <br><br>
+  ロゴ変更:
+  <input type="file" accept="image/*" onchange="setLogo(event)">
 </div>
 
-<!-- ===== Music ===== -->
-<div id="musicContainer" class="screen">
+<div id="desktop">
+  <!-- Gameアイコン -->
+  <div class="app-icon" onclick="openGame()">
+    <div class="icon">🟩</div>
+    <div class="label">Game</div>
+  </div>
+<div class="app-icon" onclick="openMusic()">
+  <div class="icon">🎵</div>
+  <div class="label">Music</div>
+</div>
+  <div class="iconArea">
+    <div class="icon" onclick="openNotepad()">📝<br>Note</div>
+  </div>
+
+  <div id="taskbar">
+    <div id="startBtn" onclick="toggleStart()">Start</div>
+    <div id="clock"></div>
+  </div>
+
+  <div id="startMenu">
+    <div onclick="openNotepad()">Notepad</div>
+    <div onclick="openAbout()">About cha-syuOS</div>
+    <div>
+      壁紙変更
+      <input type="file" accept="image/*" onchange="setWallpaper(event)">
+    </div>
+  </div>
+</div>
+
+<!-- Game Container -->
+<div id="gameContainer">
+  <canvas id="gameCanvas"></canvas>
+  <button id="restartBtn">リスタート</button>
+  <button id="homeBtn">ホームに戻る</button>
+</div>
+<div id="musicContainer"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:black;
+color:white;
+padding-top:80px;
+padding-left:20px;
+padding-right:20px;
+padding-bottom:20px;
+box-sizing:border-box;
+overflow:auto;
+z-index:9999;">
   <h2>Music Player</h2>
 
   <input type="file" id="musicFile" accept="audio/*">
   <br><br>
 
-  <audio id="audioPlayer" controls style="width:100%;"></audio>
+ <audio id="audioPlayer" controls style="width:100%; margin-top:20px;"></audio>
+  <br><br>
 
-  <button onclick="showScreen('desktop')">ホームに戻る</button>
+  <button onclick="closeMusic()">ホームに戻る</button>
 </div>
-
 <script>
-/* ===== 画面切替システム ===== */
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(screen=>{
-    screen.style.display="none";
-  });
-  document.getElementById(id).style.display="block";
+// ------------------ 起動アニメ ------------------
+window.onload = function(){
+  var savedLogo = localStorage.getItem("logo");
+  if(savedLogo){document.getElementById("logoImage").src = savedLogo;}
+};
+
+var terminal = document.getElementById("terminalBoot");
+var boot = document.getElementById("boot");
+var loginScreen = document.getElementById("login");
+var desktop = document.getElementById("desktop");
+
+terminal.innerHTML = "Initializing cha-syuOS v0.5...<br>";
+setTimeout(()=>{terminal.innerHTML+="Loading kernel...<br>";},500);
+setTimeout(()=>{terminal.innerHTML+="Starting services...<br>";},1000);
+setTimeout(()=>{
+  terminal.style.display="none";
+  boot.style.display="flex";
+},2000);
+setTimeout(()=>{
+  boot.style.display="none";
+  loginScreen.style.display="flex";
+},6000);
+
+// ------------------ Login ------------------
+function login(){
+  if(document.getElementById("password").value==="ramen"){
+    loginScreen.style.display="none";
+    desktop.style.display="block";
+    loadSaved();
+  }else{alert("Wrong password");}
 }
 
-/* ===== 起動時 ===== */
-showScreen("desktop");
-
-/* ===== Game ===== */
-function openGame(){
-  showScreen("gameContainer");
+// ------------------ Windows ------------------
+function createWindow(title,content){
+  var win=document.createElement("div");
+  win.className="window";
+  win.innerHTML="<b>"+title+"</b><br>"+content+"<br><button onclick='this.parentElement.remove()'>Close</button>";
+  desktop.appendChild(win);
 }
 
-/* ===== Music ===== */
-function openMusic(){
-  showScreen("musicContainer");
+function openNotepad(){
+  var content=localStorage.getItem("note")||"";
+  createWindow("Notepad","<textarea id='noteArea' style='width:100%;height:100px;'>"+content+"</textarea><br><button onclick='saveNote()'>Save</button>");
 }
 
-/* ===== 音楽再生 ===== */
-const musicFile = document.getElementById("musicFile");
-const audioPlayer = document.getElementById("audioPlayer");
+function saveNote(){
+  localStorage.setItem("note",document.getElementById("noteArea").value);
+  alert("Saved!");
+}
 
-musicFile.addEventListener("change", function(){
-  const file = this.files[0];
-  if(file){
-    const url = URL.createObjectURL(file);
-    audioPlayer.src = url;
-    audioPlayer.play();
+// ------------------ Wallpaper & Logo ------------------
+function setWallpaper(event){
+  if(desktop.style.display === "block"){ // デスクトップ表示中のみ
+    var reader=new FileReader();
+    reader.onload=function(){
+      desktop.style.background="url("+reader.result+") center/cover";
+      localStorage.setItem("wall", reader.result);
+    };
+    reader.readAsDataURL(event.target.files[0]);
   }
-});
-</script>
+}
 
+function setLogo(event){
+  var reader=new FileReader();
+  reader.onload=function(){
+    document.getElementById("logoImage").src=reader.result;
+    localStorage.setItem("logo",reader.result);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function loadSaved(){
+  var savedWall=localStorage.getItem("wall");
+  if(savedWall){desktop.style.background="url("+savedWall+") center/cover";}
+  var savedLogo=localStorage.getItem("logo");
+  if(savedLogo){document.getElementById("logoImage").src=savedLogo;}
+}
+
+// ------------------ Clock ------------------
+function updateClock(){
+  var now = new Date();
+  document.getElementById("clock").innerHTML=
+    now.getFullYear()+"/"+
+    String(now.getMonth()+1).padStart(2,'0')+"/"+
+    String(now.getDate()).padStart(2,'0')+" "+
+    String(now.getHours()).padStart(2,'0')+":"+
+    String(now.getMinutes()).padStart(2,'0');
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// ------------------ Start Menu ------------------
+function toggleStart(){
+  var menu=document.getElementById("startMenu");
+  menu.style.display=(menu.style.display==="block")?"none":"block";
+}
+
+function openAbout(){alert("cha-syuOS v0.5\nMade by FFox\nSpecial thanks\nChatGPT&Github");}
+
+// ------------------ ゲーム統合 ------------------
+</script>
+  <script src="game.js"></script>
+<script src="music.js"></script>
 </body>
 </html>
+
+
