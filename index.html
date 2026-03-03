@@ -186,7 +186,10 @@ body{
     <div class="icon">🟩</div>
     <div class="label">Game</div>
   </div>
-
+<div class="app-icon" onclick="openMusic()">
+  <div class="icon">🎵</div>
+  <div class="label">Music</div>
+</div>
   <div class="iconArea">
     <div class="icon" onclick="openNotepad()">📝<br>Note</div>
   </div>
@@ -212,7 +215,17 @@ body{
   <button id="restartBtn">リスタート</button>
   <button id="homeBtn">ホームに戻る</button>
 </div>
+<div id="musicContainer" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:black; color:white; padding:20px;">
+  <h2>Music Player</h2>
 
+  <input type="file" id="musicFile" accept="audio/*">
+  <br><br>
+
+  <audio id="audioPlayer" controls style="width:100%;"></audio>
+  <br><br>
+
+  <button onclick="closeMusic()">ホームに戻る</button>
+</div>
 <script>
 // ------------------ 起動アニメ ------------------
 window.onload = function(){
@@ -316,6 +329,7 @@ function openAbout(){alert("cha-syuOS v0.5\nMade by FFox\nSpecial thanks\nChatGP
 // ------------------ ゲーム統合 ------------------
 </script>
   <script src="game.js"></script>
+<script src="music.js"></script>
 </body>
 </html>
 
