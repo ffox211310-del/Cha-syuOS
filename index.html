@@ -256,6 +256,8 @@ z-index:9999;">
 
   <button onclick="closeMusic()">ホームに戻る</button>
 </div>
+
+  <textarea id="sharedNote" style="width:100%; height:200px;"></textarea>
 <script>
 // ------------------ 起動アニメ ------------------
 window.onload = function(){
@@ -500,6 +502,37 @@ function openAbout(){alert("cha-syuOS v0.5\nMade by FFox\nSpecial thanks\nChatGP
 <script src="music.js"></script>
 <script src="calculator.js"></script>
 <script src="filemanager.js"></script>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "ここに貼る",
+  authDomain: "ここに貼る",
+  databaseURL: "ここに貼る",
+  projectId: "ここに貼る",
+  storageBucket: "ここに貼る",
+  messagingSenderId: "ここに貼る",
+  appId: "ここに貼る"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const note = document.getElementById("sharedNote");
+
+// 書き込み
+note.addEventListener("input", () => {
+  set(ref(db, "shared/text"), note.value);
+});
+
+// 読み込み
+onValue(ref(db, "shared/text"), (snapshot) => {
+  note.value = snapshot.val() || "";
+});
+</script>
+  
 </body>
 </html>
 
