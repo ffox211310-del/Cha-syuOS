@@ -207,7 +207,11 @@ body{
   <div class="icon">⚙️</div>
   <div class="label">Settings</div>
 </div>
-
+<div class="app-icon" onclick="openOnlineDoc()">
+  <div class="icon">🌐</div>
+  <div class="label">Document</div>
+</div>
+  
   <div id="taskbar">
     <div id="startBtn" onclick="toggleStart()">Start</div>
     <div id="clock"></div>
@@ -259,9 +263,7 @@ z-index:9999;">
 
   
 
-  <input id="roomId" placeholder="部屋ID">
-<button onclick="joinRoom()">参加</button>
-<textarea id="sharedNote" style="width:100%; height:200px;"></textarea>
+
   
   <script>
 // ------------------ 起動アニメ ------------------
@@ -324,6 +326,16 @@ function createWindow(title,content){
   makeDraggable(win);
 }
 
+    function openOnlineDoc(){
+  createWindow("Online Document 🌐", `
+    部屋ID:<br>
+    <input id="roomId" placeholder="部屋ID">
+    <button onclick="joinRoom()">参加</button>
+    <br><br>
+    <textarea id="sharedNote" style="width:100%; height:150px;"></textarea>
+  `);
+}
+    
   function makeDraggable(element){
 
   let isDragging = false;
@@ -525,22 +537,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const note = document.getElementById("sharedNote");
-
-let currentRoom = "";
-let roomRef = null;
-let unsubscribe = null;
-
 window.joinRoom = function(){
 
   const roomInput = document.getElementById("roomId").value;
+  const note = document.getElementById("sharedNote");
 
-  if(!roomInput){
+  if(!roomInput || !note){
     alert("部屋IDを入れて！");
     return;
   }
 
-  // 前の監視を止める
   if(unsubscribe){
     unsubscribe();
   }
@@ -548,12 +554,10 @@ window.joinRoom = function(){
   currentRoom = roomInput;
   roomRef = ref(db, "rooms/" + currentRoom + "/text");
 
-  // 書き込み（毎回追加しないように上書き）
   note.oninput = () => {
     set(roomRef, note.value);
   };
 
-  // 読み込み
   unsubscribe = onValue(roomRef, (snapshot) => {
     note.value = snapshot.val() || "";
   });
