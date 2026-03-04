@@ -537,6 +537,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+    let currentRoom = "";
+let roomRef = null;
+let unsubscribe = null;
+    
 window.joinRoom = function(){
 
   const roomInput = document.getElementById("roomId").value;
