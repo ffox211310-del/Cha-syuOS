@@ -315,13 +315,15 @@ function createWindow(title,content){
   makeDraggable(win);
 }
   
-  function makeDraggable(element){
+function makeDraggable(element){
 
   var isDragging = false;
-  var offsetX, offsetY;
+  var offsetX = 0;
+  var offsetY = 0;
 
   var header = element.querySelector(".window-header");
 
+  // ---- マウス用 ----
   header.addEventListener("mousedown", function(e){
     isDragging = true;
     offsetX = e.clientX - element.offsetLeft;
@@ -336,6 +338,24 @@ function createWindow(title,content){
   });
 
   document.addEventListener("mouseup", function(){
+    isDragging = false;
+  });
+
+  // ---- タッチ用（スマホ対応） ----
+  header.addEventListener("touchstart", function(e){
+    isDragging = true;
+    offsetX = e.touches[0].clientX - element.offsetLeft;
+    offsetY = e.touches[0].clientY - element.offsetTop;
+  });
+
+  document.addEventListener("touchmove", function(e){
+    if(isDragging){
+      element.style.left = (e.touches[0].clientX - offsetX) + "px";
+      element.style.top  = (e.touches[0].clientY - offsetY) + "px";
+    }
+  });
+
+  document.addEventListener("touchend", function(){
     isDragging = false;
   });
 }
