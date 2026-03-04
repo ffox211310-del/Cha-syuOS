@@ -203,7 +203,10 @@ body{
   <div class="icon">🧮</div>
   <div class="label">Calc</div>
 </div>
-  
+  <div class="app-icon" onclick="openSettings()">
+  <div class="icon">⚙️</div>
+  <div class="label">Settings</div>
+</div>
 
   <div id="taskbar">
     <div id="startBtn" onclick="toggleStart()">Start</div>
@@ -360,7 +363,78 @@ function createWindow(title,content){
   });
 }
 
+  function openSettings(){
 
+  createWindow("Settings ⚙️", `
+    
+    <h3>Theme</h3>
+    <button onclick="setDark()">Dark</button>
+    <button onclick="setLight()">Light</button>
+    <br><br>
+
+    <h3>Window Opacity</h3>
+    <input type="range" min="0.3" max="1" step="0.1"
+      onchange="setOpacity(this.value)">
+    <br><br>
+
+    <h3>Password</h3>
+    <input type="text" id="newPass" placeholder="New password">
+    <button onclick="changePassword()">Change</button>
+    <br><br>
+
+    <h3>System</h3>
+    <button onclick="resetOS()">Factory Reset</button>
+
+  `);
+}
+
+  // テーマ
+function setDark(){
+  desktop.style.background="linear-gradient(135deg,#0f2027,#203a43,#2c5364)";
+  localStorage.setItem("theme","dark");
+}
+
+function setLight(){
+  desktop.style.background="linear-gradient(135deg,#e0eafc,#cfdef3)";
+  localStorage.setItem("theme","light");
+}
+
+// 透明度
+function setOpacity(value){
+  document.querySelectorAll(".window").forEach(w=>{
+    w.style.background="rgba(255,255,255,"+value+")";
+  });
+  localStorage.setItem("opacity",value);
+}
+
+// パスワード変更
+function changePassword(){
+  var newPass=document.getElementById("newPass").value;
+  if(newPass){
+    localStorage.setItem("password",newPass);
+    alert("Password changed!");
+  }
+}
+
+// 初期化
+function resetOS(){
+  if(confirm("全部消えるけどいい？")){
+    localStorage.clear();
+    location.reload();
+  }
+}
+  function login(){
+  var savedPass = localStorage.getItem("password") || "ramen";
+
+  if(document.getElementById("password").value === savedPass){
+    loginScreen.style.display="none";
+    desktop.style.display="block";
+    loadSaved();
+  }else{
+    alert("Wrong password");
+  }
+}
+  
 function openNotepad(){
   var content=localStorage.getItem("note")||"";
   createWindow("Notepad","<textarea id='noteArea' style='width:100%;height:100px;'>"+content+"</textarea><br><button onclick='saveNote()'>Save</button>");
