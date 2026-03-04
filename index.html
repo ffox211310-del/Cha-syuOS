@@ -289,10 +289,30 @@ function login(){
 
 // ------------------ Windows ------------------
 function createWindow(title,content){
+
   var win=document.createElement("div");
   win.className="window";
-  win.innerHTML="<b>"+title+"</b><br>"+content+"<br><button onclick='this.parentElement.remove()'>Close</button>";
+
+  win.innerHTML = `
+    <div class="window-header" style="
+      cursor:move;
+      background:rgba(0,0,0,0.4);
+      padding:5px;
+      border-radius:8px 8px 0 0;">
+      <b>${title}</b>
+      <button style="float:right;"
+        onclick="this.parentElement.parentElement.remove()">
+        X
+      </button>
+    </div>
+    <div style="padding:10px;">
+      ${content}
+    </div>
+  `;
+
   desktop.appendChild(win);
+
+  makeDraggable(win);
 }
 
 function openNotepad(){
