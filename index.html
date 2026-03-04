@@ -322,6 +322,8 @@ function createWindow(title,content){
 
   const header = element.querySelector(".window-header");
 
+  header.style.touchAction = "none"; // ← これ超重要
+
   // ===== マウス =====
   header.addEventListener("mousedown", function(e){
     isDragging = true;
@@ -339,12 +341,12 @@ function createWindow(title,content){
     isDragging = false;
   });
 
-  // ===== タッチ（スマホ） =====
+  // ===== タッチ =====
   header.addEventListener("touchstart", function(e){
     isDragging = true;
     offsetX = e.touches[0].clientX - element.offsetLeft;
     offsetY = e.touches[0].clientY - element.offsetTop;
-  });
+  }, { passive:false });
 
   document.addEventListener("touchmove", function(e){
     if(!isDragging) return;
