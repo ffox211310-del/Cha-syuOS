@@ -21,11 +21,15 @@ function openTimeApp(){
 }
 
 let timerInterval;
+const alarmSound = new Audio("alarm.mp3");
 let stopwatchInterval;
 let startTime;
 
 function startTimer(){
 
+  alarmSound.load();
+
+ let time = document.getElementById("timerInput").value;
   let time = parseInt(document.getElementById("timerInput").value);
 
   timerInterval = setInterval(()=>{
@@ -33,9 +37,9 @@ function startTimer(){
     document.getElementById("timerInput").value = time;
 
     if(time <= 0){
-      clearInterval(timerInterval);
-      alert("Time up!");
-    }
+ clearInterval(timerInterval);
+ alarmSound.play();
+}
 
   },1000);
 
