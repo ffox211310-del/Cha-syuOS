@@ -17,3 +17,41 @@ function openTimeApp(){
   `);
 
 }
+
+let timerInterval;
+let stopwatchInterval;
+let startTime;
+
+function startTimer(){
+
+  let time = parseInt(document.getElementById("timerInput").value);
+
+  timerInterval = setInterval(()=>{
+    time--;
+    document.getElementById("timerInput").value = time;
+
+    if(time <= 0){
+      clearInterval(timerInterval);
+      alert("Time up!");
+    }
+
+  },1000);
+
+}
+
+function startStopwatch(){
+
+  startTime = Date.now();
+
+  stopwatchInterval = setInterval(()=>{
+
+    let t = (Date.now() - startTime)/1000;
+    document.getElementById("stopwatch").innerText = t.toFixed(2);
+
+  },10);
+
+}
+
+function stopStopwatch(){
+  clearInterval(stopwatchInterval);
+}
