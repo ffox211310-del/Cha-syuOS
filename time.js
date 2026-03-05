@@ -1,60 +1,43 @@
-function openTimeApp() {
+let time = 300;
+let timer = null;
 
-  const win = createWindow("Time ⏰", 300, 300);
+function openTime() {
 
+  const win = document.createElement("div");
+  win.className = "window";
   win.innerHTML = `
-  <h2>Time</h2>
-
-  <h3>Stopwatch</h3>
-  <div id="swDisplay">0</div>
-  <button onclick="startSW()">Start</button>
-  <button onclick="stopSW()">Stop</button>
-  <button onclick="resetSW()">Reset</button>
-
-  <hr>
-
-  <h3>Timer</h3>
-  <input id="timerInput" type="number" placeholder="秒">
+  <h3>⏰ Time</h3>
+  <div id="timeDisplay">300</div>
   <button onclick="startTimer()">Start</button>
-  <div id="timerDisplay"></div>
+  <button onclick="stopTimer()">Stop</button>
+  <button onclick="resetTimer()">Reset</button>
   `;
 
-}
-
-let swTime = 0;
-let swInterval;
-
-function startSW(){
-  if(!swInterval){
-    swInterval = setInterval(()=>{
-      swTime++;
-      document.getElementById("swDisplay").innerText = swTime;
-    },1000);
-  }
-}
-
-function stopSW(){
-  clearInterval(swInterval);
-  swInterval = null;
-}
-
-function resetSW(){
-  swTime = 0;
-  document.getElementById("swDisplay").innerText = 0;
+  document.body.appendChild(win);
 }
 
 function startTimer(){
-  let time = document.getElementById("timerInput").value;
-  let display = document.getElementById("timerDisplay");
+  if(timer) return;
 
-  let interval = setInterval(()=>{
+  timer = setInterval(()=>{
     time--;
-    display.innerText = time;
+    document.getElementById("timeDisplay").innerText = time;
 
     if(time <= 0){
-      clearInterval(interval);
+      clearInterval(timer);
+      timer = null;
       alert("Time up!");
     }
 
   },1000);
+}
+
+function stopTimer(){
+  clearInterval(timer);
+  timer = null;
+}
+
+function resetTimer(){
+  time = 300;
+  document.getElementById("timeDisplay").innerText = time;
 }
