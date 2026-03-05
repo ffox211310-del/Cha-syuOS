@@ -5,7 +5,9 @@ function openTimeApp(){
   <h3>Timer</h3>
   <input id="timerInput" type="number" value="300"> 秒
   <br><br>
-  <button onclick="startTimer()">Start</button>
+<button onclick="startTimer()">Start</button>
+<button onclick="stopTimer()">Stop</button>
+<button onclick="resetTimer()">Reset</button>
 
   <hr>
 
@@ -54,4 +56,13 @@ function startStopwatch(){
 
 function stopStopwatch(){
   clearInterval(stopwatchInterval);
+}
+
+function stopTimer(){
+  clearInterval(timerInterval);
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);
+  document.getElementById("timerInput").value = 300;
 }
