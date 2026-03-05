@@ -1,43 +1,19 @@
-let time = 300;
-let timer = null;
+function openTimeApp(){
 
-function openTime() {
-
-  const win = document.createElement("div");
-  win.className = "window";
-  win.innerHTML = `
-  <h3>⏰ Time</h3>
-  <div id="timeDisplay">300</div>
+  createWindow("Time ⏰", `
+  
+  <h3>Timer</h3>
+  <input id="timerInput" type="number" value="300"> 秒
+  <br><br>
   <button onclick="startTimer()">Start</button>
-  <button onclick="stopTimer()">Stop</button>
-  <button onclick="resetTimer()">Reset</button>
-  `;
 
-  document.body.appendChild(win);
-}
+  <hr>
 
-function startTimer(){
-  if(timer) return;
+  <h3>Stopwatch</h3>
+  <div id="stopwatch">0.00</div>
+  <button onclick="startStopwatch()">Start</button>
+  <button onclick="stopStopwatch()">Stop</button>
 
-  timer = setInterval(()=>{
-    time--;
-    document.getElementById("timeDisplay").innerText = time;
+  `);
 
-    if(time <= 0){
-      clearInterval(timer);
-      timer = null;
-      alert("Time up!");
-    }
-
-  },1000);
-}
-
-function stopTimer(){
-  clearInterval(timer);
-  timer = null;
-}
-
-function resetTimer(){
-  time = 300;
-  document.getElementById("timeDisplay").innerText = time;
 }
