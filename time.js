@@ -20,8 +20,9 @@ function openTimeApp(){
 
 }
 
-let timerInterval;
 const alarmSound = new Audio("alarm.mp3");
+
+let timerInterval;
 let stopwatchInterval;
 let startTime;
 
@@ -36,9 +37,10 @@ function startTimer(){
     time--;
     document.getElementById("timerInput").value = time;
 
-    if(time <= 0){
- clearInterval(timerInterval);
- alarmSound.play();
+if(time <= 0){
+  clearInterval(timerInterval);
+  alarmSound.play();
+  alert("Time up!");
 }
 
   },1000);
