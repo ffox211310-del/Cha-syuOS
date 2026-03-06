@@ -25,6 +25,7 @@ const alarmSound = new Audio("alarm.mp3");
 let timerInterval;
 let stopwatchInterval;
 let startTime;
+let alarmCount = 0;
 
 function startTimer(){
 
@@ -38,9 +39,19 @@ function startTimer(){
     document.getElementById("timerInput").value = time;
 
     if(time <= 0){
-      clearInterval(timerInterval);
-      alarmSound.play();
-      alert("Time up!");
+  clearInterval(timerInterval);
+
+  alarmCount = 0;
+
+  let alarmLoop = setInterval(()=>{
+
+    alarmSound.currentTime = 0;
+    alarmSound.play();
+
+    alarmCount++;
+
+    if(alarmCount >= 20){
+      clearInterval(alarmLoop);
     }
 
   },1000);
