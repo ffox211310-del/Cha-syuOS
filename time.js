@@ -39,19 +39,24 @@ function startTimer(){
     document.getElementById("timerInput").value = time;
 
     if(time <= 0){
-  clearInterval(timerInterval);
 
-  alarmCount = 0;
+      clearInterval(timerInterval);
 
-  let alarmLoop = setInterval(()=>{
+      alarmCount = 0;
 
-    alarmSound.currentTime = 0;
-    alarmSound.play();
+      let alarmLoop = setInterval(()=>{
 
-    alarmCount++;
+        alarmSound.currentTime = 0;
+        alarmSound.play();
 
-    if(alarmCount >= 20){
-      clearInterval(alarmLoop);
+        alarmCount++;
+
+        if(alarmCount >= 20){
+          clearInterval(alarmLoop);
+        }
+
+      },1000);
+
     }
 
   },1000);
