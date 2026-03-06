@@ -21,13 +21,18 @@ function openTimeApp(){
 }
 
 const alarmSound = new Audio("alarm.mp3");
-alarmSound.loop = true;
 
 let timerInterval;
 let stopwatchInterval;
 let startTime;
 
 function startTimer(){
+
+  // iOS対策（音を解禁）
+  alarmSound.play().then(()=>{
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+  });
 
   let time = parseInt(document.getElementById("timerInput").value);
 
@@ -40,6 +45,7 @@ function startTimer(){
 
       clearInterval(timerInterval);
 
+      alarmSound.loop = true;
       alarmSound.currentTime = 0;
       alarmSound.play();
 
@@ -74,10 +80,12 @@ function stopStopwatch(){
 function stopTimer(){
   clearInterval(timerInterval);
   alarmSound.pause();
+  alarmSound.currentTime = 0;
 }
 
 function resetTimer(){
   clearInterval(timerInterval);
   alarmSound.pause();
+  alarmSound.currentTime = 0;
   document.getElementById("timerInput").value = 300;
 }
