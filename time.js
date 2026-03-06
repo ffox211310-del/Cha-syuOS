@@ -5,9 +5,9 @@ function openTimeApp(){
   <h3>Timer</h3>
   <input id="timerInput" type="number" value="300"> 秒
   <br><br>
-<button onclick="startTimer()">Start</button>
-<button onclick="stopTimer()">Stop</button>
-<button onclick="resetTimer()">Reset</button>
+  <button onclick="startTimer()">Start</button>
+  <button onclick="stopTimer()">Stop</button>
+  <button onclick="resetTimer()">Reset</button>
 
   <hr>
 
@@ -30,18 +30,18 @@ function startTimer(){
 
   alarmSound.load();
 
- let time = document.getElementById("timerInput").value;
   let time = parseInt(document.getElementById("timerInput").value);
 
   timerInterval = setInterval(()=>{
+
     time--;
     document.getElementById("timerInput").value = time;
 
-if(time <= 0){
-  clearInterval(timerInterval);
-  alarmSound.play();
-  alert("Time up!");
-}
+    if(time <= 0){
+      clearInterval(timerInterval);
+      alarmSound.play();
+      alert("Time up!");
+    }
 
   },1000);
 
