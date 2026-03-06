@@ -28,11 +28,7 @@ let startTime;
 
 function startTimer(){
 
-  // iOS対策（音を解禁）
-  alarmSound.play().then(()=>{
-    alarmSound.pause();
-    alarmSound.currentTime = 0;
-  });
+  alarmSound.load();
 
   let time = parseInt(document.getElementById("timerInput").value);
 
@@ -42,18 +38,9 @@ function startTimer(){
     document.getElementById("timerInput").value = time;
 
     if(time <= 0){
-
       clearInterval(timerInterval);
-
-      alarmSound.loop = true;
-      alarmSound.currentTime = 0;
       alarmSound.play();
-
-      alert("Time up‼︎");
-
-      alarmSound.pause();
-      alarmSound.currentTime = 0;
-
+      alert("Time up!");
     }
 
   },1000);
@@ -79,13 +66,9 @@ function stopStopwatch(){
 
 function stopTimer(){
   clearInterval(timerInterval);
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
 }
 
 function resetTimer(){
   clearInterval(timerInterval);
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
   document.getElementById("timerInput").value = 300;
 }
