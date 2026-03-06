@@ -21,15 +21,13 @@ function openTimeApp(){
 }
 
 const alarmSound = new Audio("alarm.mp3");
+alarmSound.loop = true;
 
 let timerInterval;
 let stopwatchInterval;
 let startTime;
-let alarmCount = 0;
 
 function startTimer(){
-
-  alarmSound.load();
 
   let time = parseInt(document.getElementById("timerInput").value);
 
@@ -42,20 +40,13 @@ function startTimer(){
 
       clearInterval(timerInterval);
 
-      alarmCount = 0;
+      alarmSound.currentTime = 0;
+      alarmSound.play();
 
-      let alarmLoop = setInterval(()=>{
+      alert("Time up‼︎");
 
-        alarmSound.currentTime = 0;
-        alarmSound.play();
-
-        alarmCount++;
-
-        if(alarmCount >= 20){
-          clearInterval(alarmLoop);
-        }
-
-      },1000);
+      alarmSound.pause();
+      alarmSound.currentTime = 0;
 
     }
 
@@ -82,9 +73,11 @@ function stopStopwatch(){
 
 function stopTimer(){
   clearInterval(timerInterval);
+  alarmSound.pause();
 }
 
 function resetTimer(){
   clearInterval(timerInterval);
+  alarmSound.pause();
   document.getElementById("timerInput").value = 300;
 }
