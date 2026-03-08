@@ -183,6 +183,10 @@ out.innerHTML+="<br>>>> ";
 });
 
 }
+
+  else if(commands[command]){
+  commands[command](arg);
+}
   
 out.scrollTop=out.scrollHeight;
 
