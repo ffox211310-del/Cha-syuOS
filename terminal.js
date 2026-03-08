@@ -1,3 +1,20 @@
+let currentPath = ["home"]; // 今いる場所
+
+function getCurrentDir(){
+  let dir = filesystem;
+  for(let p of currentPath){
+    dir = dir[p];
+  }
+  return dir;
+}
+
+function getPrompt(){
+  let path = currentPath.join("/");
+  if(path === "home") path="~";
+  else path="~/" + currentPath.slice(1).join("/");
+  return "user@cha-syuOS:" + path + "$ ";
+}
+
 function openTerminal(){
 
 createWindow("Terminal 💻",`
@@ -21,13 +38,14 @@ background:black;
 color:#00ff00;
 border:none;
 font-family:monospace;
-"
-placeholder="$ command">
+">
 
 `);
 
 setTimeout(()=>{
-document.getElementById("terminalInput").focus();
+let input=document.getElementById("terminalInput");
+input.placeholder=getPrompt();
+input.focus();
 },100);
 
 }
@@ -36,13 +54,14 @@ document.addEventListener("keydown",function(e){
 
 if(e.key === "Enter"){
 
-let input = document.getElementById("terminalInput");
+let input=document.getElementById("terminalInput");
 if(!input) return;
 
-let command = input.value;
+let command=input.value;
 runCommand(command);
 
 input.value="";
+input.placeholder=getPrompt();
 
 }
 
@@ -50,48 +69,80 @@ input.value="";
 
 function runCommand(cmd){
 
-let out = document.getElementById("terminalOutput");
+let out=document.getElementById("terminalOutput");
+out.innerHTML += "<br>" + getPrompt() + cmd;
 
-out.innerHTML += "<br>$ " + cmd;
+let parts=cmd.split(" ");
+let command=parts[0];
+let arg=parts[1];
 
-if(cmd === "help"){
+if(command==="help"){
 
 out.innerHTML += `
 <br>Commands:
-<br>help
-<br>about
-<br>clear
 <br>ls
+<br>mkdir
+<br>cd
+<br>touch
+<br>clear
 `;
 
 }
 
-else if(cmd === "about"){
-
-out.innerHTML += "<br>Cha-syuOS Terminal v0.1";
-
-}
-
-else if(cmd === "clear"){
-
+else if(command==="clear"){
 out.innerHTML="";
+}
+
+else if(command==="ls"){
+
+let dir=getCurrentDir();
+
+for(let item in dir){
+out.innerHTML+="<br>"+item;
+}
 
 }
 
-else if(cmd === "ls"){
+else if(command==="mkdir"){
 
-for(let item in filesystem){
-out.innerHTML += "<br>" + item;
+let dir=getCurrentDir();
+dir[arg]={};
+saveFS();
+
+}
+
+else if(command==="touch"){
+
+let dir=getCurrentDir();
+dir[arg]="";
+saveFS();
+
+}
+
+else if(command==="cd"){
+
+if(arg===".."){
+if(currentPath.length>1) currentPath.pop();
+}
+
+else{
+
+let dir=getCurrentDir();
+
+if(dir[arg] && typeof dir[arg]==="object"){
+currentPath.push(arg);
+}else{
+out.innerHTML+="<br>folder not found";
+}
+
 }
 
 }
 
 else{
-
-out.innerHTML += "<br>command not found";
-
+out.innerHTML+="<br>command not found";
 }
 
-out.scrollTop = out.scrollHeight;
+out.scrollTop=out.scrollHeight;
 
 }
