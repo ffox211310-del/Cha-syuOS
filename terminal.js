@@ -61,6 +61,7 @@ out.innerHTML += `
 <br>help
 <br>about
 <br>clear
+<br>ls
 `;
 
 }
@@ -74,6 +75,14 @@ out.innerHTML += "<br>Cha-syuOS Terminal v0.1";
 else if(cmd === "clear"){
 
 out.innerHTML="";
+
+}
+
+else if(cmd === "ls"){
+
+for(let item in filesystem){
+out.innerHTML += "<br>" + item;
+}
 
 }
 
