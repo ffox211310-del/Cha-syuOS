@@ -31,3 +31,21 @@ alert("Nano installed!");
 };
 
 let installedPackages={};
+
+packages["calc"] = {
+  install: function(){
+
+    commands["calc"] = async function(){
+
+      let expr = prompt("calc>");
+
+      if(!expr) return;
+
+      let result = pyodide.runPython(`
+print(eval("${expr}"))
+`);
+
+    }
+
+  }
+};
