@@ -147,7 +147,6 @@ out.scrollTop=out.scrollHeight;
 
 }
 
-
 else if(command==="apt"){
 
 if(parts[1]==="install"){
