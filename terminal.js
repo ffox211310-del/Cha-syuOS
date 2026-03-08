@@ -146,3 +146,29 @@ out.innerHTML+="<br>command not found";
 out.scrollTop=out.scrollHeight;
 
 }
+
+else if(command==="apt"){
+
+if(parts[1]==="install"){
+
+let pkg=parts[2];
+
+if(packages[pkg]){
+
+out.innerHTML+="<br>Installing "+pkg+"...";
+packages[pkg].install();
+out.innerHTML+="<br>Done.";
+
+}else{
+
+out.innerHTML+="<br>Package not found";
+
+}
+
+}else{
+
+out.innerHTML+="<br>Usage: apt install [package]";
+
+}
+
+}
