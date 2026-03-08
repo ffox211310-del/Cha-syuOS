@@ -165,17 +165,7 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
-  else if(command==="python3"){
-
-if(!installedPackages["python3"]){
-out.innerHTML+="<br>python3: command not found";
-return;
-}
-
-out.innerHTML+="<br>Python 3.10 (Cha-syuOS)";
-out.innerHTML+="<br>>>> ";
-
-}
+  
 
   else if(command==="python3"){
 
