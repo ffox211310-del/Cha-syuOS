@@ -135,7 +135,11 @@ currentPath.push(arg);
 out.innerHTML+="<br>folder not found";
 }
 
-  else if(command==="apt"){
+}
+
+}
+
+else if(command==="apt"){
 
 if(parts[1]==="install"){
 
@@ -159,14 +163,6 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
-}
-
-}
-
-}
-
-else{
-out.innerHTML+="<br>command not found";
 }
 
 out.scrollTop=out.scrollHeight;
