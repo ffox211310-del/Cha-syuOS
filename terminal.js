@@ -72,6 +72,33 @@ input.placeholder=getPrompt();
 
 function runCommand(cmd){
 
+if(pythonMode){
+
+if(cmd==="exit"){
+pythonMode=false;
+out.innerHTML+="<br>Exit Python";
+return;
+}
+
+try{
+
+let result = pyodide.runPython(cmd);
+
+if(result !== undefined){
+out.innerHTML+="<br>"+result;
+}
+
+}catch(err){
+
+out.innerHTML+="<br>"+err;
+
+}
+
+out.innerHTML+="<br>>> ";
+return;
+
+}
+  
 let out=document.getElementById("terminalOutput");
 out.innerHTML += "<br>" + getPrompt() + cmd;
 
@@ -168,25 +195,21 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
-  
-
   else if(command==="python3"){
 
-if(!installedPackages["python3"]){
-out.innerHTML+="<br>python3: command not found";
-return;
-}
-
 out.innerHTML+="<br>Loading Python...";
+
 startPython().then(()=>{
 
+pythonMode = true;
 out.innerHTML+="<br>Python ready!";
-out.innerHTML+="<br>>>> ";
+out.innerHTML+="<br>>> ";
 
 });
 
 }
 
+  
   else if(commands[command]){
   commands[command](arg);
 }
