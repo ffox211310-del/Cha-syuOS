@@ -72,6 +72,8 @@ input.placeholder=getPrompt();
 
 function runCommand(cmd){
 
+let out=document.getElementById("terminalOutput");
+  
 if(pythonMode){
 
 if(cmd==="exit"){
