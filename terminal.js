@@ -1,4 +1,7 @@
+let pythonMode = false;
+
 let currentPath = ["home"]; // 今いる場所
+
 
 function getCurrentDir(){
   let dir = filesystem;
