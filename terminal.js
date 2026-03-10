@@ -101,7 +101,7 @@ return;
 
 }
   
-let out=document.getElementById("terminalOutput");
+
 out.innerHTML += "<br>" + getPrompt() + cmd;
 
 let parts=cmd.split(" ");
