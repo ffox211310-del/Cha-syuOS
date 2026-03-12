@@ -294,3 +294,30 @@ saveFS();
 }
 
 }
+
+
+commands["tree"] = function(){
+
+let out=document.getElementById("terminalOutput");
+
+let dir = getCurrentDir();
+
+function showTree(folder, indent){
+
+for(let item in folder){
+
+out.innerHTML += "<br>" + indent + "├ " + item;
+
+if(typeof folder[item] === "object"){
+
+showTree(folder[item], indent + "│ ");
+
+}
+
+}
+
+}
+
+showTree(dir,"");
+
+}
