@@ -220,3 +220,15 @@ out.scrollTop=out.scrollHeight;
 
 }
 
+
+commands["pwd"] = function(){
+
+let out=document.getElementById("terminalOutput");
+
+let path=currentPath.join("/");
+
+if(path==="home") path="/home";
+
+out.innerHTML+="<br>"+path;
+
+}
