@@ -234,3 +234,63 @@ if(path==="home") path="/home";
 out.innerHTML+="<br>"+path;
 
 }
+
+commands["echo"] = function(arg){
+
+let out=document.getElementById("terminalOutput");
+
+out.innerHTML+="<br>"+arg;
+
+}
+
+commands["cat"] = function(arg){
+
+let out=document.getElementById("terminalOutput");
+
+let dir=getCurrentDir();
+
+if(dir[arg]!==undefined){
+
+out.innerHTML+="<br>"+dir[arg];
+
+}else{
+
+out.innerHTML+="<br>file not found";
+
+}
+
+}
+
+commands["rm"] = function(arg){
+
+let out=document.getElementById("terminalOutput");
+
+let dir=getCurrentDir();
+
+if(dir[arg]!==undefined){
+
+delete dir[arg];
+saveFS();
+
+}else{
+
+out.innerHTML+="<br>file not found";
+
+}
+
+}
+
+commands["nano"] = function(arg){
+
+let dir=getCurrentDir();
+
+let content=prompt("Edit file:", dir[arg] || "");
+
+if(content!==null){
+
+dir[arg]=content;
+saveFS();
+
+}
+
+}
