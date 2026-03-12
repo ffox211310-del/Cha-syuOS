@@ -1,3 +1,5 @@
+let commands = {};
+
 let pythonMode = false;
 
 let currentPath = ["home"]; // 今いる場所
