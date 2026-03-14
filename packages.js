@@ -3,7 +3,6 @@ let packages = {
 python3:{
 name:"python3",
 description:"Python interpreter",
-
 install:function(){
 
 installedPackages["python3"]=true;
@@ -11,10 +10,9 @@ installedPackages["python3"]=true;
 alert("Python3 installed!");
 
 }
-
 },
 
-  calculator:{
+calculator:{
 install(){
 
 filesystem.apps["calculator.js"] = `
@@ -32,14 +30,11 @@ alert(a+b);
 `;
 
 }
-}
-
-}
+},
 
 nano:{
 name:"nano",
 description:"Text editor",
-
 install:function(){
 
 installedPackages["nano"]=true;
@@ -47,27 +42,6 @@ installedPackages["nano"]=true;
 alert("Nano installed!");
 
 }
-
 }
 
-};
-
-let installedPackages={};
-
-packages["calc"] = {
-  install: function(){
-
-    commands["calc"] = async function(){
-
-      let expr = prompt("calc>");
-
-      if(!expr) return;
-
-      let result = pyodide.runPython(`
-print(eval("${expr}"))
-`);
-
-    }
-
-  }
 };
