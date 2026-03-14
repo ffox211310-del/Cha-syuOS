@@ -70,7 +70,7 @@ alert("Paint installed!");
 
 }
 
-}
+},
     
 nano:{
 name:"nano",
