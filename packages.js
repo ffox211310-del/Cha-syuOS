@@ -1,8 +1,11 @@
+let installedPackages = {};
+
 let packages = {
 
 python3:{
 name:"python3",
 description:"Python interpreter",
+
 install:function(){
 
 installedPackages["python3"]=true;
@@ -10,10 +13,30 @@ installedPackages["python3"]=true;
 alert("Python3 installed!");
 
 }
+
+},
+
+nano:{
+name:"nano",
+description:"Text editor",
+
+install:function(){
+
+installedPackages["nano"]=true;
+
+alert("Nano installed!");
+
+}
+
 },
 
 calculator:{
-install(){
+name:"calculator",
+description:"Simple GUI calculator",
+
+install:function(){
+
+if(!filesystem.apps) filesystem.apps={};
 
 filesystem.apps["calculator.js"] = `
 createWindow("Calculator", \`
@@ -29,19 +52,36 @@ alert(a+b);
 \`);
 `;
 
+alert("Calculator installed!");
+
 }
+
 },
 
-nano:{
-name:"nano",
-description:"Text editor",
-install:function(){
+calc:{
+name:"calc",
+description:"Python calculator",
 
-installedPackages["nano"]=true;
+install: async function(){
 
-alert("Nano installed!");
+commands["calc"] = async function(){
+
+let expr = prompt("calc>");
+
+if(!expr) return;
+
+await startPython();
+
+let result = pyodide.runPython(expr);
+
+alert(result);
+
+};
+
+alert("Calc installed!");
 
 }
+
 }
 
 };
