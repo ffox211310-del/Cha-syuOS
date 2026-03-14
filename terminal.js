@@ -145,6 +145,31 @@ saveFS();
 
 }
 
+  else if(command==="run"){
+
+let dir = getCurrentDir();
+
+if(!dir[arg]){
+out.innerHTML+="<br>file not found";
+return;
+}
+
+let code = dir[arg];
+
+try{
+
+eval(code);
+
+out.innerHTML+="<br>Program executed.";
+
+}catch(err){
+
+out.innerHTML+="<br>Error: "+err;
+
+}
+
+}
+    
 else if(command==="touch"){
 
 let dir=getCurrentDir();
