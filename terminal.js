@@ -170,37 +170,7 @@ out.innerHTML+="<br>Error: "+err;
 
 }
 
-    else if(command==="py"){
-
-let dir = getCurrentDir();
-
-if(!dir[arg]){
-out.innerHTML += "<br>file not found";
-return;
-}
-
-let code = dir[arg];
-
-startPython().then(()=>{
-
-try{
-
-let result = pyodide.runPython(code);
-
-if(result !== undefined){
-out.innerHTML += "<br>" + result;
-}
-
-}catch(err){
-
-out.innerHTML += "<br>Error: " + err;
-
-}
-
-});
-
-}
-      
+    
 else if(command==="touch"){
 
 let dir=getCurrentDir();
@@ -269,6 +239,44 @@ out.innerHTML+="<br>>> ";
 
 }
 
+    else if(command==="py"){
+
+let dir = getCurrentDir();
+
+if(!dir[arg]){
+out.innerHTML += "<br>file not found";
+return;
+}
+
+let code = dir[arg];
+
+startPython().then(()=>{
+
+try{
+
+let result = pyodide.runPython(`
+import sys
+from io import StringIO
+
+buffer = StringIO()
+sys.stdout = buffer
+
+` + code + `
+
+sys.stdout.getvalue()
+`);
+
+out.innerHTML += "<br>" + result;
+
+}catch(err){
+
+out.innerHTML += "<br>Error: " + err;
+
+}
+
+});
+
+}
   
   else if(commands[command]){
   commands[command](arg);
