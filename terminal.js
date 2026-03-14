@@ -345,6 +345,24 @@ out.innerHTML+="<br>file not found";
 
 }
 
+commands["run"] = function(file){
+
+let dir = getCurrentDir();
+
+if(dir[file]){
+eval(dir[file]);
+return;
+}
+
+if(filesystem.apps && filesystem.apps[file]){
+eval(filesystem.apps[file]);
+return;
+}
+
+alert("file not found");
+
+};
+
 commands["nano"] = function(arg){
 
 let dir=getCurrentDir();
