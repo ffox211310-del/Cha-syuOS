@@ -26,7 +26,7 @@ if(!filesystem.apps){
 filesystem.apps = {};
 }
 
-filesystem.apps["paint.js"] = `
+filesystem.home["paint.js"] = `
 createWindow("Paint", \`
 
 <canvas id="paintCanvas" width="400" height="300"
