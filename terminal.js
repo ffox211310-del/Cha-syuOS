@@ -132,7 +132,14 @@ else if(command==="ls"){
 let dir=getCurrentDir();
 
 for(let item in dir){
-out.innerHTML+="<br>"+item;
+
+if(typeof dir[item] === "object"){
+out.innerHTML += "<br>" + item + "/";
+}
+else{
+out.innerHTML += "<br>" + item;
+}
+
 }
 
 }
