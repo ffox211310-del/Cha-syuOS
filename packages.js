@@ -14,6 +14,28 @@ alert("Python3 installed!");
 
 },
 
+  calculator:{
+install(){
+
+filesystem.apps["calculator.js"] = `
+createWindow("Calculator", \`
+<h2>Calculator</h2>
+<input id="a">
++
+<input id="b">
+<button onclick="
+let a=Number(document.getElementById('a').value);
+let b=Number(document.getElementById('b').value);
+alert(a+b);
+">=</button>
+\`);
+`;
+
+}
+}
+
+}
+
 nano:{
 name:"nano",
 description:"Text editor",
