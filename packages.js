@@ -18,11 +18,13 @@ alert("Python3 installed!");
 
   paint:{
 name:"paint",
-description:"Simple paint app",
+description:"Simple paint",
 
 install:function(){
 
-if(!filesystem.apps) filesystem.apps={};
+if(!filesystem.apps){
+filesystem.apps = {};
+}
 
 filesystem.apps["paint.js"] = `
 createWindow("Paint", \`
@@ -41,22 +43,18 @@ let ctx=canvas.getContext("2d");
 
 let drawing=false;
 
-canvas.addEventListener("mousedown",()=>drawing=true);
-canvas.addEventListener("mouseup",()=>drawing=false);
-canvas.addEventListener("mouseleave",()=>drawing=false);
+canvas.onmousedown=()=>drawing=true;
+canvas.onmouseup=()=>drawing=false;
 
-canvas.addEventListener("mousemove",(e)=>{
-
+canvas.onmousemove=(e)=>{
 if(!drawing) return;
 
 let rect=canvas.getBoundingClientRect();
 let x=e.clientX-rect.left;
 let y=e.clientY-rect.top;
 
-ctx.fillStyle="black";
 ctx.fillRect(x,y,2,2);
-
-});
+};
 
 window.clearPaint=function(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -69,7 +67,6 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 alert("Paint installed!");
 
 }
-
 },
     
 nano:{
