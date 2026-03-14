@@ -33,7 +33,26 @@ createWindow("Paint", \`
 style="border:1px solid white;background:white;"></canvas>
 <br>
 <button onclick="clearPaint()">Clear</button>
+canvas.addEventListener("mousedown",(e)=>{
+e.stopPropagation();
+drawing=true;
+});
 
+canvas.addEventListener("mousemove",(e)=>{
+e.stopPropagation();
+if(!drawing) return;
+
+let rect=canvas.getBoundingClientRect();
+let x=e.clientX-rect.left;
+let y=e.clientY-rect.top;
+
+ctx.fillRect(x,y,3,3);
+});
+
+canvas.addEventListener("mouseup",(e)=>{
+e.stopPropagation();
+drawing=false;
+});
 \`);
 
 setTimeout(()=>{
