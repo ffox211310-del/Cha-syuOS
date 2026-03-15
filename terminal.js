@@ -232,6 +232,31 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="cha-syu"){
+
+if(parts[1]==="say"){
+
+let message = parts.slice(2).join(" ");
+
+if(!message){
+out.innerHTML += "<br>Usage: cha-syu say [message]";
+return;
+}
+
+let line = "-".repeat(message.length+2);
+
+out.innerHTML += `
+<br> ${message}
+<br> ${line}
+<br>   ()_()
+<br>   ( ◠∞◠)
+<br>  / >🍜  Cha-syu
+`;
+
+}
+
+}
+  
   else if(command==="python3"){
 
 out.innerHTML+="<br>Loading Python...";
