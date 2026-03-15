@@ -117,11 +117,26 @@ if(command==="help"){
 
 out.innerHTML += `
 <br>Commands:
-<br>ls
-<br>mkdir
-<br>cd
-<br>touch
-<br>clear
+<br>基本コマンド
+<br>ls ファイルやフォルダの一覧
+<br>mkdir フォルダの作成
+<br>cd フォルダに入る
+<br>touch ファイル,フォルダを作る
+<br>clear 表示を一旦消す
+<br>pwd 今いる場所
+<br>tree ファイル,フォルダの位置関係
+<br>rm ファイル,フォルダを消す
+<br>histor 履歴
+<br>↓ファイル操作系↓
+<br>cat ファイルの中身を閲覧
+<br>nano ファイルを編集
+<br>echo 文字の出力
+<br>↓aptでインストール↓
+<br>calc 計算機
+<br>python3 すごい便利なやつ
+<br>paint(開発途中)
+<br>↓？？？↓
+<br>cha-syu say 何かしらの文字
 `;
 
 }
