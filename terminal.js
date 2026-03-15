@@ -232,6 +232,25 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="beep"){
+out.innerHTML+="<br>BEEP!";
+}
+  
+else if(command==="hack"){
+
+out.innerHTML+="<br>ACCESSING MAINFRAME...";
+setTimeout(()=>{out.innerHTML+="<br>010101010101";},500);
+setTimeout(()=>{out.innerHTML+="<br>101010101010";},1000);
+setTimeout(()=>{out.innerHTML+="<br>ACCESS GRANTED";},1500);
+
+}
+  
+else if(command==="ramen"){
+
+out.innerHTML+="<br>🍜🍜🍜🍜🍜";
+
+}
+  
 else if(command==="chafetch"){
 
 out.innerHTML+=`
