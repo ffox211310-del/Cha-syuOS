@@ -232,6 +232,18 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="chafetch"){
+
+out.innerHTML+=`
+<br>   🍜 Cha-syuOS
+<br>OS: Cha-syuOS
+<br>Kernel: 端末による
+<br>Shell: cha-term,bash
+<br>Filesystem: virtual
+`;
+
+}
+  
 else if(command==="fortune"){
 
 let fortunes=[
