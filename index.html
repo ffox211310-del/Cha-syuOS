@@ -310,11 +310,7 @@ function login(){
   }else{alert("Wrong password");}
 }
 
-function startOS(){
 
-document.getElementById("welcomeScreen").style.display="none";
-
-}
     
 // ------------------ Windows ------------------
 function createWindow(title,content){
@@ -344,6 +340,39 @@ function createWindow(title,content){
   makeDraggable(win);
 }
 
+function showWelcome(){
+
+createWindow("Welcome",`
+
+<h2>Cha-syuOSへようこそ‼︎</h2>
+
+<p>
+Cha-syuOSは学習用のWebOSです。<br>
+Linux風のコマンドやアプリを<br>
+ブラウザ上で体験できます。
+</p>
+
+<h3>Let's try!</h3>
+
+<ul>
+<li>help</li>
+<li>ls</li>
+<li>mkdir test</li>
+<li>nano file.txt</li>
+<li>run app.js</li>
+</ul>
+
+`);
+
+}
+
+if(!localStorage.getItem("cha-syu-welcome")){
+
+showWelcome();
+localStorage.setItem("cha-syu-welcome","done");
+
+}
+    
     function openOnlineDoc(){
   createWindow("Online Document 🌐", `
     部屋ID:<br>
