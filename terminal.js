@@ -232,6 +232,22 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="fortune"){
+
+let fortunes=[
+"今日の運勢：大吉",
+"替え玉すると運気UP",
+"チャーシューを信じろ",
+"今日はコードがバグる日",
+"OS開発者に休みはない"
+];
+
+let f=fortunes[Math.floor(Math.random()*fortunes.length)];
+
+out.innerHTML+="<br>"+f;
+
+}
+  
 else if(command==="cha-syu"){
 
 if(parts[1]==="say"){
