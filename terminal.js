@@ -232,6 +232,39 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="mv"){
+
+let src=parts[1];
+let dest=parts[2];
+
+let dir=getCurrentDir();
+
+if(dir[src]){
+dir[dest]=dir[src];
+delete dir[src];
+saveFS();
+}else{
+out.innerHTML+="<br>file not found";
+}
+
+}
+  
+else if(command==="cp"){
+
+let src=parts[1];
+let dest=parts[2];
+
+let dir=getCurrentDir();
+
+if(dir[src]){
+dir[dest]=dir[src];
+saveFS();
+}else{
+out.innerHTML+="<br>file not found";
+}
+
+}
+  
 else if(command==="beep"){
 out.innerHTML+="<br>BEEP!";
 }
