@@ -4,6 +4,7 @@ let pythonMode = false;
 
 let currentPath = ["home"]; // 今いる場所
 
+let historyList = [];
 
 function getCurrentDir(){
   let dir = filesystem;
@@ -74,6 +75,8 @@ input.placeholder=getPrompt();
 
 function runCommand(cmd){
 
+historyList.push(cmd);
+  
 let out=document.getElementById("terminalOutput");
   
 if(pythonMode){
@@ -232,6 +235,14 @@ out.innerHTML+="<br>Usage: apt install [package]";
 
 }
 
+else if(command==="history"){
+
+for(let i=0;i<historyList.length;i++){
+out.innerHTML += "<br>" + i + " " + historyList[i];
+}
+
+}
+  
 else if(command==="mv"){
 
 let src=parts[1];
