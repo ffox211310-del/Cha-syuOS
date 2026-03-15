@@ -34,7 +34,7 @@ font-family:monospace;
 padding:5px;
 ">
 Cha-syuOS Terminal<br>
-Type 'help'
+Type 'help'とりまこれ打って実行
 </div>
 
 <input id="terminalInput"
